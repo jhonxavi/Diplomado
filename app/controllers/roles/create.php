@@ -1,40 +1,45 @@
 <?php
+
 include ('../../../app/config.php');
 
-// Inicia la sesión solo una vez
-session_start();
+$nombre_rol = $_POST['nombre_rol'];
+$nombre_rol = mb_strtoupper($nombre_rol,'UTF-8');
 
-// Obtén y valida el nombre del rol
-$nombre_rol = $_POST['nombre_rol'] ?? '';
-$nombre_rol = mb_strtoupper(trim($nombre_rol), 'UTF-8');
-
-// Verifica si el nombre del rol está vacío
-if ($nombre_rol == "") {
+if($nombre_rol == ""){
+    session_start();
     $_SESSION['mensaje'] = "Llene el campo nombre del rol";
     $_SESSION['icono'] = "error";
-    header('Location:' . APP_URL . "/admin/roles/create.php");
-    exit();  // Termina la ejecución después de redirigir
-}
+    header('Location:'.APP_URL."/admin/roles/create.php");
+}else{
+    $sentencia = $pdo->prepare("INSERT INTO roles 
+       ( nombre_rol, fyh_creacion, estado) 
+VALUES (:nombre_rol,:fyh_creacion,:estado) ");
 
-// Inicializa las variables faltantes
-$fechaHora = date('Y-m-d H:i:s');  // Fecha y hora actual
-$estado_de_registro = 1;           // Estado activo por defecto
+    $sentencia->bindParam('nombre_rol',$nombre_rol);
+    $sentencia->bindParam('fyh_creacion',$fechaHora);
+    $sentencia->bindParam('estado',$estado_de_registro);
 
-// Prepara la sentencia SQL
-$sentencia = $pdo->prepare("INSERT INTO roles 
-    (nombre_rol, fyh_creacion, estado) 
-    VALUES (:nombre_rol, :fyh_creacion, :estado)");
-
-$sentencia->bindParam(':nombre_rol', $nombre_rol);
-$sentencia->bindParam(':fyh_creacion', $fechaHora);
-$sentencia->bindParam(':estado', $estado_de_registro);
-
-try {
-    // Ejecuta la sentencia y verifica si fue exitosa
-    if ($sentencia->execute()) {
-        echo "Registrado con éxito";
+    try{
+        if($sentencia->execute()){
+            session_start();
+            $_SESSION['mensaje'] = "Se registro el rol de la manera correcta en la base de datos";
+            $_SESSION['icono'] = "success";
+            header('Location:'.APP_URL."/admin/roles");
+        }else{
+            session_start();
+            $_SESSION['mensaje'] = "Error no se pudo registrar en la base datos, comuniquese con el administrador";
+            $_SESSION['icono'] = "error";
+            header('Location:'.APP_URL."/admin/roles/create.php");
+        }
+    }catch (Exception $exception){
+        session_start();
+        $_SESSION['mensaje'] = "Esta rol ya existe en la base de datos";
+        $_SESSION['icono'] = "error";
+        header('Location:'.APP_URL."/admin/roles/create.php");
     }
-} catch (PDOException $e) {
-    // Captura posibles errores y los maneja (puedes personalizar este mensaje si lo deseas)
-    echo "Error en la base de datos: " . $e->getMessage();
+
+
+
 }
+
+

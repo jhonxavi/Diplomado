@@ -3,7 +3,6 @@ include('../../app/config.php');
 include('../../admin/layout/parte1.php'); 
 
 include('../../app/controllers/docentes/listado_docentes.php'); // Incluye el controlador para obtener los datos de docentes
-
 ?>
 
 <div class="content-wrapper" style="background-color: #fbfffb;">
@@ -29,14 +28,11 @@ include('../../app/controllers/docentes/listado_docentes.php'); // Incluye el co
                             <table id="example1" class="table table-striped table-bordered table-hover table-sm">
                                 <thead>
                                 <tr>
-                                    <th><center>Nro</center></th>
-                                    <th><center>ID Docente</center></th>
+                                    <th><center>Identificacion</center></th>
                                     <th><center>Nombre del Docente</center></th>
                                     <th><center>Dirección</center></th>
                                     <th><center>Teléfono</center></th>
                                     <th><center>Correo</center></th>
-                                    <th><center>Género</center></th>
-                                    <th><center>Fecha de Nacimiento</center></th>
                                     <th><center>Formación Académica</center></th>
                                     <th><center>Áreas de Conocimiento</center></th>
                                     <th><center>Acciones</center></th>
@@ -49,26 +45,27 @@ include('../../app/controllers/docentes/listado_docentes.php'); // Incluye el co
                                     $id_docente = $docente['id_docente']; // Usa el campo `id_docente` como identificador
                                     $contador_docente++; ?>
                                     <tr>
-                                        <td style="text-align: center"><?= $contador_docente; ?></td>
                                         <td><?= $docente['id_docente']; ?></td>
                                         <td><?= $docente['nombre_docente']; ?></td>
                                         <td><?= $docente['dir_docente']; ?></td>
                                         <td><?= $docente['tel_docente']; ?></td>
                                         <td><?= $docente['email_docente']; ?></td>
-                                        <td><?= $docente['genero_docente']; ?></td>
-                                        <td><?= $docente['fecha_nacimiento_docente']; ?></td>
                                         <td><?= $docente['formacion_academica']; ?></td>
                                         <td><?= $docente['areas_conocimiento']; ?></td>
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <a href="show.php?id=<?= $id_docente; ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
-                                                <!-- <a href="edit.php?id=<?= $id_docente; ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
-                                                <form action="<?= APP_URL; ?>/app/controllers/docentes/delete.php" onclick="preguntar<?= $id_docente; ?>(event)" method="post" id="miFormulario<?= $id_docente; ?>">
-                                                    <input type="text" name="id_docente" value="<?= $id_docente; ?>" hidden>
-                                                    <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 5px 5px 0px"><i class="bi bi-trash"></i></button>
-                                                </form> -->
+                                                <a href="edit_docente.php?id=<?= $id_docente; ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+                                                
+                                                <!-- Botón para eliminar -->
+                                                <form action="<?= APP_URL; ?>/app/controllers/docentes/delete.php" method="GET" id="miFormulario<?= $id_docente; ?>">
+                                                    <input type="hidden" name="id_docente" value="<?= $id_docente; ?>">
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="preguntar<?= $id_docente; ?>(event)" style="border-radius: 0px 5px 5px 0px"><i class="bi bi-trash"></i></button>
+                                                </form>
+                                                                                                
                                                 <script>
-                                                    function preguntar<?= $id_docente; ?>(event) {
+                                                    <?php foreach ($docentes as $docente): ?>
+                                                    function preguntar<?= $docente['id_docente']; ?>(event) {
                                                         event.preventDefault();
                                                         Swal.fire({
                                                             title: 'Eliminar registro',
@@ -81,11 +78,12 @@ include('../../app/controllers/docentes/listado_docentes.php'); // Incluye el co
                                                             denyButtonText: 'Cancelar',
                                                         }).then((result) => {
                                                             if (result.isConfirmed) {
-                                                                var form = $('#miFormulario<?= $id_docente; ?>');
+                                                                var form = document.getElementById('miFormulario<?= $docente['id_docente']; ?>');
                                                                 form.submit();
                                                             }
                                                         });
                                                     }
+                                                    <?php endforeach; ?>
                                                 </script>
                                             </div>
                                         </td>
@@ -104,7 +102,6 @@ include('../../app/controllers/docentes/listado_docentes.php'); // Incluye el co
     </div>
     
 </div>
-
 
 <?php
 include('../../admin/layout/parte2.php'); // Ajusta la ruta si es necesario
@@ -152,10 +149,10 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
 </script>
 
 <style>
-        h1 {
-            font-size: 2.5rem; 
-            font-weight: bold; 
-            color: #001704; 
-            padding: 10px; 
-        }
-    </style>
+    h1 {
+        font-size: 2.5rem; 
+        font-weight: bold; 
+        color: #001704; 
+        padding: 10px; 
+    }
+</style>

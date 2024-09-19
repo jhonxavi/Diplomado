@@ -27,6 +27,7 @@ try {
         $email_asist = htmlspecialchars($asistente['email_asistente']);
         $genero_asist = htmlspecialchars($asistente['genero_asistente']);
         $fecha_nacimiento_asist = htmlspecialchars($asistente['fecha_nacimiento_asistente']);
+        $fecha_vinculacion_asist = htmlspecialchars($asistente['fecha_vinculacion_asistente']);
         $acuerdo_nombramiento_asist = htmlspecialchars($asistente['acuerdo_nombramiento_asistente']);
     } else {
         echo "No se encontró el asistente.";
@@ -102,6 +103,14 @@ include('../../admin/layout/parte1.php');
                                     <div class="form-group">
                                         <label>Fecha de Nacimiento</label>
                                         <p><?= $fecha_nacimiento_asist; ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Fecha de Vinculación</label>
+                                        <p><?= $fecha_vinculacion_asist; ?></p>
                                     </div>
                                 </div>
                             </div>

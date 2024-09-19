@@ -17,7 +17,7 @@ $estado_civil = $_POST['estado_civil'] ?? '';
 $fecha_ingreso = $_POST['fecha_ingreso'] ?? '';
 $fecha_egreso = $_POST['fecha_egreso'] ?? '';
 $estado_cohorte = $_POST['estado_cohorte'] ?? '';
-$programa = $_POST['programa'] ?? '';
+$genero_estudiante = $_POST['genero_estudiante'] ?? '';
 
 // Manejo del archivo de imagen
 $foto_estudiante = '';
@@ -60,7 +60,7 @@ if (isset($_FILES['foto_estudiante']) && $_FILES['foto_estudiante']['error'] == 
 // Validar campos obligatorios
 if (empty($nombre_estudiante) || empty($id_estudiante) || empty($Cod_estudiante) || empty($dir_estudiante) || 
     empty($tel_estudiante) || empty($email_estudiante) || empty($fecha_nacimiento) || empty($semestre_estudiante) 
-    || empty($estado_civil) || empty($fecha_ingreso) || empty($fecha_egreso) || empty($estado_cohorte) || empty($programa)) {
+    || empty($estado_civil) || empty($fecha_ingreso) || empty($fecha_egreso) || empty($estado_cohorte) || empty($genero_estudiante)) {
     $_SESSION['mensaje'] = "Por favor, llene todos los campos obligatorios.";
     $_SESSION['icono'] = "error";
     header('Location:' . APP_URL . "/admin/estudiantes/create_estudiantes.php");
@@ -70,9 +70,9 @@ if (empty($nombre_estudiante) || empty($id_estudiante) || empty($Cod_estudiante)
 // Prepara la sentencia SQL corregida
 $sentencia = $pdo->prepare("INSERT INTO estudiante 
     (nombre_estudiante, id_estudiante, Cod_estudiante, foto_estudiante, dir_estudiante, tel_estudiante, email_estudiante, 
-    fecha_nacimiento, semestre_estudiante, estado_civil, fecha_ingreso, fecha_egreso, estado_cohorte, programa) 
+    fecha_nacimiento, semestre_estudiante, estado_civil, fecha_ingreso, fecha_egreso, estado_cohorte, genero_estudiante) 
     VALUES (:nombre_estudiante, :id_estudiante, :Cod_estudiante, :foto_estudiante, :dir_estudiante, :tel_estudiante, :email_estudiante, 
-    :fecha_nacimiento, :semestre_estudiante, :estado_civil, :fecha_ingreso, :fecha_egreso, :estado_cohorte, :programa)");
+    :fecha_nacimiento, :semestre_estudiante, :estado_civil, :fecha_ingreso, :fecha_egreso, :estado_cohorte, :genero_estudiante)");
 
 // Asocia las variables con sus respectivos marcadores
 $sentencia->bindParam(':nombre_estudiante', $nombre_estudiante);
@@ -88,7 +88,7 @@ $sentencia->bindParam(':estado_civil', $estado_civil);
 $sentencia->bindParam(':fecha_ingreso', $fecha_ingreso);
 $sentencia->bindParam(':fecha_egreso', $fecha_egreso);
 $sentencia->bindParam(':estado_cohorte', $estado_cohorte);
-$sentencia->bindParam(':programa', $programa);
+$sentencia->bindParam(':genero_estudiante', $genero_estudiante);
 
 try {
     // Ejecuta la sentencia y verifica si fue exitosa

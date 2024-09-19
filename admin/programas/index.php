@@ -3,7 +3,6 @@ include('../../app/config.php');
 include('../../admin/layout/parte1.php'); 
 
 include('../../app/controllers/programas/listado_programas.php'); // Incluye el controlador para obtener los datos
-
 ?>
 
 <div class="content-wrapper" style="background-color: #fbfffb;">
@@ -55,22 +54,28 @@ include('../../app/controllers/programas/listado_programas.php'); // Incluye el 
                                                 <p>No se ha subido ninguna imagen.</p>
                                             <?php endif; ?>
                                         </td>
-                                        <td><?= $programa['snies']; ?></td>
-                                        <td><?= $programa['nombre_program']; ?></td>
-                                        <td><?= $programa['des_program']; ?></td>
-                                        <td><?= $programa['email_program']; ?></td>
+                                        <td><?= htmlspecialchars($programa['snies']); ?></td>
+                                        <td><?= htmlspecialchars($programa['nombre_program']); ?></td>
+                                        <td><?= htmlspecialchars($programa['des_program']); ?></td>
+                                        <td><?= htmlspecialchars($programa['email_program']); ?></td>
                                         
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <a href="show.php?id=<?= $id_programa; ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
-                                                <a href="edit.php?id=<?= $id_programa; ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
-                                                <form action="<?= APP_URL; ?>/app/controllers/programas/delete.php" onclick="preguntar<?= $id_programa; ?>(event)" method="post" id="miFormulario<?= $id_programa; ?>">
-                                                    <input type="text" name="id_programa" value="<?= $id_programa; ?>" hidden>
-                                                    <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 5px 5px 0px"><i class="bi bi-trash"></i></button>
+                                                
+                                                <a href="show.php?id=<?= htmlspecialchars($id_programa); ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
+
+                                                <a href="edit_program.php?snies=<?= htmlspecialchars($programa['snies']) ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+
+                                                <!-- Botón para eliminar -->
+                                                <form action="<?= APP_URL; ?>/app/controllers/programas/delete_program.php" method="post" id="miFormulario<?= htmlspecialchars($id_programa); ?>">
+                                                    <input type="hidden" name="snies" value="<?= htmlspecialchars($id_programa); ?>">
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="preguntar<?= htmlspecialchars($id_programa); ?>()">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
                                                 </form>
+                                                              
                                                 <script>
-                                                    function preguntar<?= $id_programa; ?>(event) {
-                                                        event.preventDefault();
+                                                    function preguntar<?= htmlspecialchars($id_programa); ?>() {
                                                         Swal.fire({
                                                             title: 'Eliminar registro',
                                                             text: '¿Desea eliminar este registro?',
@@ -82,12 +87,12 @@ include('../../app/controllers/programas/listado_programas.php'); // Incluye el 
                                                             denyButtonText: 'Cancelar',
                                                         }).then((result) => {
                                                             if (result.isConfirmed) {
-                                                                var form = $('#miFormulario<?= $id_programa; ?>');
-                                                                form.submit();
+                                                                document.getElementById('miFormulario<?= htmlspecialchars($id_programa); ?>').submit();
                                                             }
                                                         });
                                                     }
                                                 </script>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -100,17 +105,14 @@ include('../../app/controllers/programas/listado_programas.php'); // Incluye el 
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
-    
 </div>
 
 <?php
 include('../../admin/layout/parte2.php'); // Ajusta la ruta si es necesario
 include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
 ?>
-
 
 <script>
     $(function () {
@@ -134,7 +136,7 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
                 }
             },
             "responsive": true, "lengthChange": true, "autoWidth": false,
-            /*buttons: [{
+            buttons: [{
                 extend: 'collection',
                 text: 'Reportes',
                 orientation: 'landscape',
@@ -147,15 +149,16 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
                     text: 'Imprimir',
                     extend: 'print'
                 }]
-            }],*/
+            }],
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 </script>
+
 <style>
-        h1 {
-            font-size: 2.5rem; 
-            font-weight: bold; 
-            color: #001704; 
-            padding: 10px; 
-        }
-    </style>
+    h1 {
+        font-size: 2.5rem; 
+        font-weight: bold; 
+        color: #001704; 
+        padding: 10px; 
+    }
+</style>

@@ -2,14 +2,73 @@
 session_start();
 
 if(isset($_SESSION['sesion_email'])){
+    // $email_sesion = $_SESSION['sesion_email'];
+    // $query_sesion = $pdo->prepare("SELECT * FROM usuarios WHERE email = '$email_sesion' AND estado = '1' ");
+    // $query_sesion->execute();
+
+    // $datos_sesion_usuarios = $query_sesion->fetchAll(PDO::FETCH_ASSOC);
+    // foreach ($datos_sesion_usuarios as $datos_sesion_usuario){
+    //    $nombre_sesion_usuario = $datos_sesion_usuario['nombres'];
+    // }
+
+    //------------------Christian Erazo-----------------------//
+    
     $email_sesion = $_SESSION['sesion_email'];
-    $query_sesion = $pdo->prepare("SELECT * FROM usuarios WHERE email = '$email_sesion' AND estado = '1' ");
+    $query_sesion = $pdo->prepare("SELECT * FROM usuarios as usu 
+                                            INNER JOIN roles as rol ON rol.id_rol = usu.rol_id
+                                            WHERE usu.email = '$email_sesion' AND usu.estado = '1' ");
     $query_sesion->execute();
 
     $datos_sesion_usuarios = $query_sesion->fetchAll(PDO::FETCH_ASSOC);
     foreach ($datos_sesion_usuarios as $datos_sesion_usuario){
-       $nombre_sesion_usuario = $datos_sesion_usuario['nombres'];
+        $nombre_sesion_usuario = $datos_sesion_usuario['email'];
+        $id_rol_sesion_usuario = $datos_sesion_usuario['id_rol'];
+        $rol_sesion_usuario = $datos_sesion_usuario['nombre_rol'];
+        $nombres_sesion_usuario = $datos_sesion_usuario['nombres'];
     }
+
+
+
+
+    $url = $_SERVER["PHP_SELF"];
+    $conta = strlen($url);
+    $rest = substr($url, 10, $conta);
+
+    
+    $sql_roles_permisos = "SELECT * FROM roles_permisos AS rolper
+            INNER JOIN permisos AS per ON per.id_permiso = rolper.permiso_id
+            INNER JOIN roles AS rol ON rol.id_rol = rolper.rol_id  ";
+    $query_roles_permisos = $pdo->prepare($sql_roles_permisos);
+    $query_roles_permisos->execute();
+    $roles_permisos = $query_roles_permisos->fetchAll(PDO::FETCH_ASSOC);
+
+    $contadorpermiso = 0;
+    foreach($roles_permisos as $roles_permiso){
+      if($id_rol_sesion_usuario == $roles_permiso['rol_id']){
+          // echo $roles_permiso['url'];
+          // echo "<br>";
+
+          if($rest == $roles_permiso['url']){
+            $contadorpermiso = $contadorpermiso + 1;
+            //echo "Permiso Autorizado";
+          }else{
+            //echo "No Autorizado";
+          }
+      }
+        
+      // echo $roles_permiso['url'];
+    }
+    // if($contadorpermiso>0){
+    //   echo "Ruta habilitada";
+    // }else{
+    //   echo "Ruta inhabilitada";
+    // }
+    
+
+    
+  //--------------------------------------------------------//
+    
+
 }else{
     echo "el usuario no paso por el login";
     header('Location:'.APP_URL."/login");
@@ -78,34 +137,124 @@ if(isset($_SESSION['sesion_email'])){
           <img src="https://cdn-icons-png.flaticon.com/512/6073/6073873.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?=$nombre_sesion_usuario;?></a>
+          <a href="#" class="d-block"><?=$rol_sesion_usuario;?></a>
+          <a href="#" class="d-block"><?=$nombres_sesion_usuario;?></a>
         </div>
       </div>
+
+      <!-- Sección Roles -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+          <?php
+          if(($rol_sesion_usuario=='ADMINISTRADOR') || ($rol_sesion_usuario=='PRESIDENTE')){?>
+
+              <li class="nav-item">
+                  <a href="#" class="nav-link nav-posgrados">
+                      <i class="nav-icon fas"><i class="bi bi-card-text"></i></i>
+                      <p>
+                          Roles
+                          <i class="right fas fa-angle-left"></i>
+                      </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                          <a href="<?=APP_URL;?>/admin/roles" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Listado de roles</p>
+                          </a>
+                      </li>
+                  </ul>
+
+                  <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                          <a href="<?=APP_URL;?>/admin/roles/permisos.php" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Permisos</p>
+                          </a>
+                      </li>
+                  </ul>
+              </li>
+
+          <?php
+          }
+          ?>
+
+        </ul>
+      </nav>
+      <!------------------>
+      <!-- Sección Usuarios -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+        <?php
+          if(($rol_sesion_usuario=='ADMINISTRADOR') || ($rol_sesion_usuario=='PRESIDENTE')){?>
+
+                <li class="nav-item">
+                  <a href="#" class="nav-link nav-posgrados">
+                      <i class="nav-icon fas"><i class="bi bi-people-fill"></i></i>
+                      <p>
+                          Usuarios
+                          <i class="right fas fa-angle-left"></i>
+                      </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                          <a href="<?=APP_URL;?>/admin/usuarios" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Listado de Usuarios</p>
+                          </a>
+                      </li>
+                  </ul>
+                </li>
+
+          <?php
+          }
+          ?>
+
+        </ul>
+      </nav>
+      <!-- Sección Usuarios -->
       <!-- Sección Posgrados -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="#" class="nav-link nav-posgrados">
-              <i class="nav-icon fas"><i class="bi bi-card-text"></i></i>
-              <p>
-                Posgrados
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?=APP_URL;?>/admin/programas" class="nav-link" style="color: #ffff;">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Programas Académicos</p>
+
+        <?php
+          if(($rol_sesion_usuario=='ADMINISTRADOR') || ($rol_sesion_usuario=='PRESIDENTE') 
+            || ($rol_sesion_usuario=='COORDINADOR') || ($rol_sesion_usuario=='ASISTENTE')){?>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link nav-posgrados">
+                  <i class="nav-icon fas"><i class="bi bi-card-text"></i></i>
+                  <p>
+                    Posgrados
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="<?=APP_URL;?>/admin/programas" class="nav-link" style="color: #ffff;">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Programas Académicos</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
             </ul>
-          </li>
-        </ul>
+
+        <?php
+        }
+        ?>
+          
       </nav>
       <!-- Sección Coordinadores -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+        
+
+
+
           <li class="nav-item">
             <a href="#" class="nav-link nav-coordinadores">
               <i class="nav-icon fas"><i class="bi bi-person-fill"></i></i>
@@ -115,12 +264,21 @@ if(isset($_SESSION['sesion_email'])){
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= APP_URL; ?>/admin/coordinadores" class="nav-link" style="color: #ffff;">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Coordinadores</p>
-                </a>
-              </li>
+
+            <?php
+            if(($rol_sesion_usuario=='ADMINISTRADOR') || ($rol_sesion_usuario=='PRESIDENTE')){?>
+
+                <li class="nav-item">
+                  <a href="<?= APP_URL; ?>/admin/coordinadores" class="nav-link" style="color: #ffff;">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Coordinadores</p>
+                  </a>
+                </li>
+
+            <?php
+            }
+            ?>
+              
               <li class="nav-item">
                 <a href="<?= APP_URL; ?>/admin/asistente" class="nav-link" style="color: #ffff;">
                   <i class="far fa-circle nav-icon"></i>
@@ -131,70 +289,106 @@ if(isset($_SESSION['sesion_email'])){
           </li>
         </ul>
       </nav>
+
       <!-- Sección Docentes -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="#" class="nav-link nav-docentes">
-              <i class="nav-icon fas"><i class="bi bi-person-lines-fill"></i></i>
-              <p>
-                Docentes
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?=APP_URL;?>/admin/docentes" class="nav-link" style="color: #ffff;">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Listado de Docentes</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+
+        <?php
+          if(($rol_sesion_usuario=='ADMINISTRADOR') || ($rol_sesion_usuario=='PRESIDENTE') 
+            || ($rol_sesion_usuario=='COORDINADOR') || ($rol_sesion_usuario=='ASISTENTE')){?>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link nav-docentes">
+                <i class="nav-icon fas"><i class="bi bi-person-lines-fill"></i></i>
+                <p>
+                  Docentes
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?=APP_URL;?>/admin/docentes" class="nav-link" style="color: #ffff;">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Listado de Docentes</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+        <?php
+        }
+        ?>
+
+          
         </ul>
       </nav>
       <!-- Sección Cohorte -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="#" class="nav-link nav-cohorte">
-              <i class="nav-icon fas"><i class="bi bi-person-fill"></i></i>
-              <p>
-                Cohorte
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?=APP_URL;?>/admin/cohortes" class="nav-link" style="color: #ffff;">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Listado de Cohortes</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+
+        <?php
+          if(($rol_sesion_usuario=='ADMINISTRADOR') || ($rol_sesion_usuario=='PRESIDENTE') 
+            || ($rol_sesion_usuario=='COORDINADOR') || ($rol_sesion_usuario=='ASISTENTE')){?>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link nav-cohorte">
+                <i class="nav-icon fas"><i class="bi bi-person-fill"></i></i>
+                <p>
+                  Cohorte
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?=APP_URL;?>/admin/cohortes" class="nav-link" style="color: #ffff;">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Listado de Cohortes</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+        <?php
+        }
+        ?>
+
+
+          
         </ul>
       </nav>
       <!-- Sección Estudiantes -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="#" class="nav-link nav-estudiantes">
-              <i class="nav-icon fas"><i class="bi bi-person-fill"></i></i>
-              <p>
-                Estudiantes
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?=APP_URL;?>/admin/estudiantes" class="nav-link" style="color: #ffff;">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Listado de Estudiantes</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+
+        <?php
+          if(($rol_sesion_usuario=='ADMINISTRADOR') || ($rol_sesion_usuario=='PRESIDENTE') 
+            || ($rol_sesion_usuario=='COORDINADOR') || ($rol_sesion_usuario=='ASISTENTE')){?>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link nav-estudiantes">
+                <i class="nav-icon fas"><i class="bi bi-person-fill"></i></i>
+                <p>
+                  Estudiantes
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?=APP_URL;?>/admin/estudiantes" class="nav-link" style="color: #ffff;">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Listado de Estudiantes</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+        <?php
+        }
+        ?>
+
+
+          
         </ul>
       </nav>
       <!-- Cerrar Sesión -->

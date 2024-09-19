@@ -18,7 +18,7 @@ if (empty($snies) || empty($nombre_program) || empty($des_program) || empty($ema
     $_SESSION['mensaje'] = "Todos los campos son obligatorios";
     $_SESSION['icono'] = "error";
     header('Location:' . APP_URL . "/admin/programas/create_program.php");
-    exit();
+    exit(); 
 }
 
 // Verificación de duplicados

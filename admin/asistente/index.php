@@ -3,7 +3,6 @@ include('../../app/config.php');
 include('../../admin/layout/parte1.php'); 
 
 include('../../app/controllers/asistente/listado_asistentes.php'); // Incluye el controlador para obtener los datos de los asistentes
-
 ?>
 
 <div class="content-wrapper" style="background-color: #fbfffb;">
@@ -16,13 +15,14 @@ include('../../app/controllers/asistente/listado_asistentes.php'); // Incluye el
             <br>
             <div class="row">
                 <div class="col-md-15">
-                <div class="card card-outline card-primary" style="border-color: #28a745;">
+                    <div class="card card-outline card-primary" style="border-color: #28a745;">
                         <div class="card-header">
                             <h3 class="card-title">Asistentes Registrados</h3>
                             <div class="card-tools">
                                 <!-- Botón para crear un nuevo asistente -->
                                 <a href="create_asistente.php" class="btn" style="background-color: #28a745; color: white; border: none; border-radius: 0.25rem; padding: 0.5rem 1rem; font-weight: bold;">
-                                    <i class="bi bi-plus-square"></i> Crear nuevo Asistente</a>
+                                    <i class="bi bi-plus-square"></i> Crear nuevo Asistente
+                                </a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -46,38 +46,43 @@ include('../../app/controllers/asistente/listado_asistentes.php'); // Incluye el
                                 <?php
                                 $contador_asistente = 0;
                                 foreach ($asistentes as $asistente) {
-                                    $id_asist = $asistente['id_asistente']; // Usa el campo `id_asist` como identificador
+                                    $id_asistente = $asistente['id_asistente']; // Usa el campo `id_asistente` como identificador
                                     $contador_asistente++; ?>
                                     <tr>
                                         <td style="text-align: center"><?= $contador_asistente; ?></td>
-                                        <td><?= $asistente['nombre_asistente']; ?></td>
-                                        <td><?= $asistente['id_asistente']; ?></td>
-                                        <td><?= $asistente['dir_asistente']; ?></td>
-                                        <td><?= $asistente['tel_asistente']; ?></td>
-                                        <td><?= $asistente['email_asistente']; ?></td>
-                                        <td><?= $asistente['genero_asistente']; ?></td>
-                                        <td><?= $asistente['fecha_nacimiento_asistente']; ?></td>
+                                        <td><?= htmlspecialchars($asistente['nombre_asistente']); ?></td>
+                                        <td><?= htmlspecialchars($asistente['id_asistente']); ?></td>
+                                        <td><?= htmlspecialchars($asistente['dir_asistente']); ?></td>
+                                        <td><?= htmlspecialchars($asistente['tel_asistente']); ?></td>
+                                        <td><?= htmlspecialchars($asistente['email_asistente']); ?></td>
+                                        <td><?= htmlspecialchars($asistente['genero_asistente']); ?></td>
+                                        <td><?= htmlspecialchars($asistente['fecha_nacimiento_asistente']); ?></td>
                                         <td style="text-align: center">
-            <?php if (!empty($asistente['acuerdo_nombramiento_asistente'])): ?>
-                <a href="uploads/<?= htmlspecialchars($asistente['acuerdo_nombramiento_asistente']); ?>" class="btn btn-sm btn-secondary" download>
-                    Descargar PDF
-                </a>
-            <?php else: ?>
-                No disponible
-            <?php endif; ?>
-        </td>           
+                                            <?php if (!empty($asistente['acuerdo_nombramiento_asistente'])): ?>
+                                                <a href="uploads/<?= htmlspecialchars($asistente['acuerdo_nombramiento_asistente']); ?>" class="btn btn-sm btn-secondary" download>
+                                                    Descargar PDF
+                                                </a>
+                                            <?php else: ?>
+                                                No disponible
+                                            <?php endif; ?>
+                                        </td>           
                                         <!-- Columna para acciones -->
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <a href="show.php?id=<?= $id_asist; ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
-                                                <!-- <a href="edit.php?id=<?= $id_asist; ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
-                                                <form action="<?= APP_URL; ?>/app/controllers/asistentes/delete.php" onclick="preguntar<?= $id_asist; ?>(event)" method="post" id="miFormulario<?= $id_asist; ?>">
-                                                    <input type="text" name="id_asist" value="<?= $id_asist; ?>" hidden>
-                                                    <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 5px 5px 0px"><i class="bi bi-trash"></i></button>
-                                                </form> -->
+                                                <a href="show.php?id=<?= $id_asistente; ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
+
+                                                <a href="edit_asistente.php?id_asistente=<?= htmlspecialchars($asistente['id_asistente']) ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+
+                                                <!-- Botón para eliminar -->
+                                                <form action="<?= APP_URL; ?>/app/controllers/asistente/delete_asistente.php" method="post" id="miFormulario<?= htmlspecialchars($id_asistente); ?>">
+                                                    <input type="hidden" name="id_asistente" value="<?= htmlspecialchars($id_asistente); ?>">
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="preguntar<?= htmlspecialchars($id_asistente); ?>()">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                                              
                                                 <script>
-                                                    function preguntar<?= $id_asist; ?>(event) {
-                                                        event.preventDefault();
+                                                    function preguntar<?= htmlspecialchars($id_asistente); ?>() {
                                                         Swal.fire({
                                                             title: 'Eliminar registro',
                                                             text: '¿Desea eliminar este registro?',
@@ -89,8 +94,7 @@ include('../../app/controllers/asistente/listado_asistentes.php'); // Incluye el
                                                             denyButtonText: 'Cancelar',
                                                         }).then((result) => {
                                                             if (result.isConfirmed) {
-                                                                var form = $('#miFormulario<?= $id_asist; ?>');
-                                                                form.submit();
+                                                                document.getElementById('miFormulario<?= htmlspecialchars($id_asistente); ?>').submit();
                                                             }
                                                         });
                                                     }
@@ -112,7 +116,6 @@ include('../../app/controllers/asistente/listado_asistentes.php'); // Incluye el
     </div>
     
 </div>
-
 
 <?php
 include('../../admin/layout/parte2.php'); // Ajusta la ruta si es necesario
@@ -141,7 +144,7 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
                 }
             },
             "responsive": true, "lengthChange": true, "autoWidth": false,
-            /*buttons: [{
+            buttons: [{
                 extend: 'collection',
                 text: 'Reportes',
                 orientation: 'landscape',
@@ -154,15 +157,15 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
                     text: 'Imprimir',
                     extend: 'print'
                 }]
-            }],*/
+            }],
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 </script>
 <style>
-        h1 {
-            font-size: 2.5rem; 
-            font-weight: bold; 
-            color: #001704; 
-            padding: 10px; 
-        }
-    </style>
+    h1 {
+        font-size: 2.5rem; 
+        font-weight: bold; 
+        color: #001704; 
+        padding: 10px; 
+    }
+</style>

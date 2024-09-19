@@ -20,7 +20,7 @@ include('../../app/controllers/estudiantes/listado_estudiantes.php'); // Incluye
                         <div class="card-header">
                             <h3 class="card-title">Estudiantes Registrados</h3>
                             <div class="card-tools">
-                                <!-- Botón para crear un nuevo programa -->
+                                <!-- Botón para crear un nuevo estudiante -->
                                 <a href="create_estudiantes.php" class="btn" style="background-color: #28a745; color: white; border: none; border-radius: 0.25rem; padding: 0.5rem 1rem; font-weight: bold;">
                                     <i class="bi bi-plus-square"></i> Crear Nuevo Estudiante</a>
                             </div>
@@ -30,14 +30,13 @@ include('../../app/controllers/estudiantes/listado_estudiantes.php'); // Incluye
                                 <thead>
                                 <tr>
                                         <th>Nro</th>
-
-                                        <th><center>Identificacion</center></th>
+                                        <th><center>Foto</center></th>
+                                        <th><center>Identificación</center></th>
                                         <th><center>Nombre</center></th>
                                         <th><center>Código</center></th>
                                         <th><center>Correo</center></th>
                                         <th><center>Semestre</center></th>
                                         <th><center>Cohorte</center></th>
-                                        <th><center>Programa</center></th>
                                         <th><center>Acciones</center></th>
                                 </tr>
                                 </thead>
@@ -45,7 +44,7 @@ include('../../app/controllers/estudiantes/listado_estudiantes.php'); // Incluye
                                 <?php
                                 $contador_estudiante = 0;
                                 foreach ($estudiante as $estudiante) {
-                                    $id_estudiante = $estudiante['id_estudiante']; // Usa el campo `id_cordi` como identificador
+                                    $id_estudiante = $estudiante['id_estudiante']; // Usa el campo `id_estudiante` como identificador
                                     $contador_estudiante++; ?>
                                     <tr>
                                         <td style="text-align: center"><?= $contador_estudiante; ?></td>
@@ -68,38 +67,45 @@ include('../../app/controllers/estudiantes/listado_estudiantes.php'); // Incluye
                                         <td><?= $estudiante['email_estudiante']; ?></td>
                                         <td><?= $estudiante['semestre_estudiante']; ?></td>
                                         <td><?= $estudiante['estado_cohorte']; ?></td>
-                                        <td><?= $estudiante['programa']; ?></td>
                                          
                                         <td style="text-align: center">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <a href="show.php?id=<?= $id_estudiante; ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
-                                                <!-- <a href="edit.php?id=<?= $id_estudiante; ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
-                                                <form action="<?= APP_URL; ?>/app/controllers/coordinadores/delete.php" onclick="preguntar<?= $id_estudiante; ?>(event)" method="post" id="miFormulario<?= $id_cordi; ?>">
-                                                    <input type="text" name="id_cordi" value="<?= $id_estudiante; ?>" hidden>
-                                                    <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 5px 5px 0px"><i class="bi bi-trash"></i></button>
-                                                </form> -->
-                                                <script>
-                                                    function preguntar<?= $id_estudiante; ?>(event) {
-                                                        event.preventDefault();
-                                                        Swal.fire({
-                                                            title: 'Eliminar registro',
-                                                            text: '¿Desea eliminar este registro?',
-                                                            icon: 'question',
-                                                            showDenyButton: true,
-                                                            confirmButtonText: 'Eliminar',
-                                                            confirmButtonColor: '#a5161d',
-                                                            denyButtonColor: '#270a0a',
-                                                            denyButtonText: 'Cancelar',
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                var form = $('#miFormulario<?= $id_cordi; ?>');
-                                                                form.submit();
-                                                            }
-                                                        });
-                                                    }
-                                                </script>
-                                            </div>
-                                        </td>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <!-- Botón de Visualizar -->
+        <a href="show.php?id=<?= $id_estudiante; ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
+
+        <!-- Botón de Editar -->
+        <a href="edit_estudiante.php?id=<?= $id_estudiante; ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+
+        <!-- Botón de Eliminar -->
+        <form action="<?= APP_URL; ?>/app/controllers/estudiantes/delete.php" method="POST" id="miFormulario<?= $id_estudiante; ?>" style="display:inline;">
+            <input type="hidden" name="id_estudiante" value="<?= $id_estudiante; ?>">
+            <button type="button" class="btn btn-danger btn-sm" onclick="preguntar<?= $id_estudiante; ?>(event)" style="border-radius: 0px 5px 5px 0px"><i class="bi bi-trash"></i></button>
+        </form>
+
+        <!-- Script para la confirmación de eliminación -->
+        <script>
+            function preguntar<?= $id_estudiante; ?>(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Eliminar registro',
+                    text: '¿Desea eliminar este registro?',
+                    icon: 'question',
+                    showDenyButton: true,
+                    confirmButtonText: 'Eliminar',
+                    confirmButtonColor: '#a5161d',
+                    denyButtonColor: '#270a0a',
+                    denyButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = $('#miFormulario<?= $id_estudiante; ?>');
+                        form.submit();
+                    }
+                });
+            }
+        </script>
+    </div>
+</td>
+
                                     </tr>
                                     <?php
                                 }
@@ -128,10 +134,10 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
             "pageLength": 5,
             "language": {
                 "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Programas",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Programas",
-                "infoFiltered": "(Filtrado de _MAX_ total Programas)",
-                "lengthMenu": "Mostrar _MENU_ Programas",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Estudiantes",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Estudiantes",
+                "infoFiltered": "(Filtrado de _MAX_ total Estudiantes)",
+                "lengthMenu": "Mostrar _MENU_ Estudiantes",
                 "loadingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",
@@ -163,10 +169,10 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
 </script>
 
 <style>
-        h1 {
-            font-size: 2.5rem; 
-            font-weight: bold; 
-            color: #001704; 
-            padding: 10px; 
-        }
-    </style>
+    h1 {
+        font-size: 2.5rem; 
+        font-weight: bold; 
+        color: #001704; 
+        padding: 10px; 
+    }
+</style>

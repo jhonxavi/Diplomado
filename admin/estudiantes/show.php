@@ -4,7 +4,7 @@ $id_estudiante = isset($_GET['id']) ? $_GET['id'] : null;
 
 if ($id_estudiante === null) {
     echo "ID del estudiante no especificado.";
-    exit; // Deten la ejecución si no se especifica un ID
+    exit; // Detener la ejecución si no se especifica un ID
 }
 
 include('../../app/config.php');
@@ -32,7 +32,6 @@ try {
         $fecha_ingreso = htmlspecialchars($estudiante['fecha_ingreso']);
         $fecha_egreso = htmlspecialchars($estudiante['fecha_egreso']); // Corregido aquí
         $estado_cohorte = htmlspecialchars($estudiante['estado_cohorte']);
-        $programa = htmlspecialchars($estudiante['programa']);
     } else {
         echo "No se encontró estudiante";
         exit;
@@ -173,14 +172,6 @@ include('../../admin/layout/parte1.php');
                                     <div class="form-group">
                                         <label>Cohorte</label>
                                         <p><?= $estado_cohorte; ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Programa</label>
-                                        <p><?= $programa; ?></p>
                                     </div>
                                 </div>
                             </div>

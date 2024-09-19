@@ -19,6 +19,10 @@ include('../../admin/layout/parte1.php'); // Ajusta la ruta si es necesario
                         </div>
                         <div class="card-body">
                             <form action="<?= APP_URL; ?>/app/controllers/docentes/create.php" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                    <label for="identificacion_docente">Identificación</label>
+                                    <input type="text" class="form-control" id="id_docente" name="id_docente" required>
+                                </div>
                                 <div class="form-group">
                                     <label for="nombre_docente">Nombre del Docente</label>
                                     <input type="text" class="form-control" id="nombre_docente" name="nombre_docente" required>

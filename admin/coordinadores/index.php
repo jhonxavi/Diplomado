@@ -36,7 +36,6 @@ include('../../app/controllers/coordinadores/listado_coordinadores.php'); // Inc
                                     <th><center>Teléfono</center></th>
                                     <th><center>Correo</center></th>
                                     <th><center>Género</center></th>
-                                    <th><center>Fecha de nacimiento</center></th>
                                     <th><center>Acuerdo de nombramiento</center></th>
                                     <th><center>Acciones</center></th>
                                 </tr>
@@ -55,7 +54,6 @@ include('../../app/controllers/coordinadores/listado_coordinadores.php'); // Inc
                                         <td><?= $coordinador['tel_cordi']; ?></td>
                                         <td><?= $coordinador['email_cordi']; ?></td>
                                         <td><?= $coordinador['genero_cordi']; ?></td>
-                                        <td><?= $coordinador['fecha_nacimiento_cordi']; ?></td>
                                          
                                         <!-- Columna para el Acuerdo de nombramiento -->
                                         <td style="text-align: center">
@@ -71,14 +69,19 @@ include('../../app/controllers/coordinadores/listado_coordinadores.php'); // Inc
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <a href="show.php?id=<?= $id_cordi; ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
-                                                <!-- <a href="edit.php?id=<?= $id_cordi; ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
-                                                <form action="<?= APP_URL; ?>/app/controllers/coordinadores/delete.php" onclick="preguntar<?= $id_cordi; ?>(event)" method="post" id="miFormulario<?= $id_cordi; ?>">
-                                                    <input type="text" name="id_cordi" value="<?= $id_cordi; ?>" hidden>
-                                                    <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 5px 5px 0px"><i class="bi bi-trash"></i></button>
-                                                </form> -->
+
+                                                <a href="edit_coordinator.php?id_cordi=<?= htmlspecialchars($coordinador['id_cordi']) ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+
+                                                <!-- Botón para eliminar -->
+                                                <form action="<?= APP_URL; ?>/app/controllers/coordinadores/delete_coordinators.php" method="post" id="miFormulario<?= htmlspecialchars($id_cordi); ?>">
+                                                    <input type="hidden" name="id_cordi" value="<?= htmlspecialchars($id_cordi); ?>">
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="preguntar<?= htmlspecialchars($id_cordi); ?>()">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                                              
                                                 <script>
-                                                    function preguntar<?= $id_cordi; ?>(event) {
-                                                        event.preventDefault();
+                                                    function preguntar<?= htmlspecialchars($id_cordi); ?>() {
                                                         Swal.fire({
                                                             title: 'Eliminar registro',
                                                             text: '¿Desea eliminar este registro?',
@@ -90,8 +93,7 @@ include('../../app/controllers/coordinadores/listado_coordinadores.php'); // Inc
                                                             denyButtonText: 'Cancelar',
                                                         }).then((result) => {
                                                             if (result.isConfirmed) {
-                                                                var form = $('#miFormulario<?= $id_cordi; ?>');
-                                                                form.submit();
+                                                                document.getElementById('miFormulario<?= htmlspecialchars($id_cordi); ?>').submit();
                                                             }
                                                         });
                                                     }
@@ -142,7 +144,7 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
                 }
             },
             "responsive": true, "lengthChange": true, "autoWidth": false,
-            /*buttons: [{
+            buttons: [{
                 extend: 'collection',
                 text: 'Reportes',
                 orientation: 'landscape',
@@ -155,7 +157,7 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
                     text: 'Imprimir',
                     extend: 'print'
                 }]
-            }],*/
+            }],
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 </script>

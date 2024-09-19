@@ -97,7 +97,6 @@ include('../../admin/layout/parte1.php'); // Ajusta la ruta si es necesario
     
 </div>
 
-
 <?php
 include('../../admin/layout/parte2.php'); // Ajusta la ruta si es necesario
 include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario

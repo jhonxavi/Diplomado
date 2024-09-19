@@ -77,24 +77,71 @@ CREATE TABLE programas (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE roles (
-  id_rol int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  nombre_rol varchar(255) NOT NULL,
-  fyh_creacion datetime DEFAULT NULL,
-  fyh_actualizacion datetime DEFAULT NULL,
-  estado varchar(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+  id_rol        INT (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  nombre_rol    VARCHAR (255) NOT NULL UNIQUE KEY,
+
+  fyh_creacion   DATETIME NULL,
+  fyh_actualizacion DATETIME NULL,
+  estado        VARCHAR (11)
+
+)ENGINE=InnoDB;
+INSERT INTO roles (nombre_rol,fyh_creacion,estado) VALUES  ('ADMINISTRADOR','2024-01-03 16:20:20','1');
+INSERT INTO roles (nombre_rol,fyh_creacion,estado) VALUES  ('COORDINADOR','2024-01-03 16:20:20','1');
+INSERT INTO roles (nombre_rol,fyh_creacion,estado) VALUES  ('ASISTENTE','2024-01-03 16:20:20','1');
 
 CREATE TABLE usuarios (
-  id_usuario int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  nombres varchar(255) NOT NULL,
-  cargo varchar(255) NOT NULL,
-  email varchar(255) NOT NULL,
-  password text NOT NULL,
-  fyh_creacion datetime DEFAULT NULL,
-  fyh_actualizacion datetime DEFAULT NULL,
-  estado varchar(11) DEFAULT NULL,
-  primer_ingreso tinyint(1) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO usuarios (nombres,cargo,email,password,fyh_creacion,estado)
-VALUES ('Jhon','ADMINISTRADOR','jhonxavi830@gmail.com','$2y$10$0tYmdHU9uGCIxY1f90W1EuIm54NQ8axowkxL1WzLbqO2LdNa8m3l2','2024-09-05 25:24:10','1');
+  id_usuario    INT (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  nombres       VARCHAR (255) NOT NULL,
+  rol_id        INT (11) NOT NULL,
+  email         VARCHAR (255) NOT NULL UNIQUE KEY,
+  password      TEXT NOT NULL,
+
+  fyh_creacion   DATETIME NULL,
+  fyh_actualizacion DATETIME NULL,
+  estado        VARCHAR (11),
+
+  FOREIGN KEY (rol_id) REFERENCES roles (id_rol) on delete no action on update cascade
+
+)ENGINE=InnoDB;
+
+
+INSERT INTO usuarios (nombres,rol_id,email,password,fyh_creacion,estado)
+VALUES ('christian','1','cristianerazoc9.5@gmail.com','$2y$10$0tYmdHU9uGCIxY1f90W1EuIm54NQ8axowkxL1WzLbqO2LdNa8m3l2','2024-09-05 25:24:10','1');
+
+INSERT INTO usuarios (nombres,rol_id,email,password,fyh_creacion,estado)
+VALUES ('Jhon','2','jhonxavi830@gmail.com','$2y$10$0tYmdHU9uGCIxY1f90W1EuIm54NQ8axowkxL1WzLbqO2LdNa8m3l2','2024-09-05 25:24:10','1');
+
+
+CREATE TABLE permisos (
+
+  id_permiso        INT (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  
+  nombre_url        VARCHAR (100) NOT NULL,
+  url               text NOT NULL,
+
+  fyh_creacion   DATETIME NULL,
+  fyh_actualizacion DATETIME NULL,
+  estado        VARCHAR (11)
+
+)ENGINE=InnoDB;
+
+INSERT INTO permisos (nombre_url,url, fyh_creacion, estado)
+VALUES ('Programas', 'admin/programas/index.php', '2024-01-03 16:20:20','1');
+
+CREATE TABLE roles_permisos (
+
+  id_rol_permiso    INT (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  
+  rol_id            INT (11) NOT NULL,
+  permiso_id        INT (11) NOT NULL,
+
+  fyh_creacion   DATETIME NULL,
+  fyh_actualizacion DATETIME NULL,
+  estado        VARCHAR (11), 
+
+  FOREIGN KEY (rol_id) REFERENCES roles (id_rol) on delete no action on update cascade,
+  FOREIGN KEY (permiso_id) REFERENCES permisos (id_permiso) on delete no action on update cascade
+
+)ENGINE=InnoDB;

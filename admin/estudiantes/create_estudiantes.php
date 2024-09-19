@@ -15,34 +15,31 @@ include('../../admin/layout/parte1.php'); // Ajusta la ruta si es necesario
                      <div class="col-md-6">
                         <div class="card card-outline card-primary" style="border-color: #28a745;">
                             <div class="card-header">
-                                <h3 class="card-title">Formulario de Inscirpcion de Estudiante</h3>
+                                <h3 class="card-title">Formulario de Inscripción de Estudiante</h3>
                             </div>
 
                                 <div class="card-body">
                                     <form action="<?= APP_URL; ?>/app/controllers/estudiantes/create.php" method="post" enctype="multipart/form-data">
                                         
                                         <!-- Campo Nombre -->
-
                                         <div class="form-group">
                                             <label for="nombre_estudiante">Nombre</label>
                                             <input type="text" class="form-control" id="nombre_estudiante" name="nombre_estudiante" required>
                                         </div>
 
-                                        <!-- Campo Identificacion -->
-
+                                        <!-- Campo Identificación -->
                                         <div class="form-group">
                                             <label for="id_estudiante">Identificación</label>
                                             <input type="text" class="form-control" id="id_estudiante" name="id_estudiante" required>
                                         </div>
 
-                                        <!-- Campo Codigo Estudiantil -->
-
+                                        <!-- Campo Código Estudiantil -->
                                         <div class="form-group">
                                             <label for="Cod_estudiante">Código</label>
                                             <input type="text" class="form-control" id="Cod_estudiante" name="Cod_estudiante" required>
                                         </div>
 
-                                        <!-- Campo Logo-->
+                                        <!-- Campo Foto -->
                                         <div class="form-group">
                                             <label for="foto_estudiante">Foto</label><br>
                                             <label class="custom-file-upload">
@@ -50,39 +47,41 @@ include('../../admin/layout/parte1.php'); // Ajusta la ruta si es necesario
                                             </label>
                                         </div>
 
-                                        
-
-
-                                        <!-- campo direccion (Archivo) -->                
-                                        
+                                        <!-- Campo Dirección -->
                                         <div class="form-group">
                                             <label for="dir_estudiante">Dirección</label>
                                             <input type="text" class="form-control" id="dir_estudiante" name="dir_estudiante" required>
                                         </div>
 
-                                        <!-- campo telefono -->
-
+                                        <!-- Campo Teléfono -->
                                         <div class="form-group">
                                             <label for="tel_estudiante">Teléfono</label>
                                             <input type="text" class="form-control" id="tel_estudiante" name="tel_estudiante" required maxlength="10">
                                         </div>
 
-                                        <!-- campo correo -->
-
+                                        <!-- Campo Correo -->
                                         <div class="form-group">
                                             <label for="email_estudiante">Correo</label>
                                             <input type="email" class="form-control" id="email_estudiante" name="email_estudiante" required>
                                         </div>
 
-                                        <!-- campo fecha de nacimiento  -->
-
+                                        <!-- Campo Fecha de Nacimiento -->
                                         <div class="form-group">
                                             <label for="fecha_nacimiento">Fecha de Nacimiento</label>
                                             <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
                                         </div>
 
-                                        <!-- campo semestre -->
+                                        <!-- Campo Género 
+                                        <div class="form-group">
+                                            <label for="genero_estudiante">Género</label>
+                                            <select class="form-control" id="genero_estudiante" name="genero_estudiante" required>
+                                                <option value="Masculino">Masculino</option>
+                                                <option value="Femenino">Femenino</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                        </div>-->
 
+                                        <!-- Campo Semestre -->
                                         <div class="form-group">
                                             <label for="semestre_estudiante">Semestre</label>
                                             <select class="form-control" id="semestre_estudiante" name="semestre_estudiante" required>
@@ -94,35 +93,31 @@ include('../../admin/layout/parte1.php'); // Ajusta la ruta si es necesario
                                             </select>
                                         </div>
 
-                                        <!-- campo estado civil -->
-
+                                        <!-- Campo Estado Civil -->
                                         <div class="form-group">
                                             <label for="estado_civil">Estado Civil</label>
                                             <select class="form-control" id="estado_civil" name="estado_civil" required>
                                                 <option value="Soltero">Soltero</option>
                                                 <option value="Casado">Casado</option>
                                                 <option value="Divorciado">Divorciado</option>
-                                                <option value="UnionLibre">Union Libre</option>
+                                                <option value="UnionLibre">Unión Libre</option>
                                                 <option value="Viudo">Viudo</option>
                                             </select>
                                         </div>
 
-                                        <!-- campo ingreso -->
-
+                                        <!-- Campo Fecha de Ingreso -->
                                         <div class="form-group">
                                             <label for="fecha_ingreso">Fecha de Ingreso</label>
                                             <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
                                         </div>
 
-                                        <!-- campo egreso-->
-
+                                        <!-- Campo Fecha de Egreso -->
                                         <div class="form-group">
                                             <label for="fecha_egreso">Fecha de Egreso</label>
                                             <input type="date" class="form-control" id="fecha_egreso" name="fecha_egreso" required>
                                         </div>
                                         
-                                        <!-- campo cohorte inscrito-->
-
+                                        <!-- Campo Cohorte Inscrito -->
                                         <div class="form-group">
                                             <label for="estado_cohorte">Cohorte</label>
                                             <select class="form-control" id="estado_cohorte" name="estado_cohorte" required>
@@ -130,29 +125,16 @@ include('../../admin/layout/parte1.php'); // Ajusta la ruta si es necesario
                                                 <option value="Cohorte2">Cohorte 2</option>
                                                 <option value="Cohorte3">Cohorte 3</option>
                                                 <option value="Cohorte4">Cohorte 4</option>
-                                                
-                                            </select>
-                                        </div>
-                                        
-                                         <!-- programa que pertenece -->
-
-                                         <div class="form-group">
-                                            <label for="programa">Programa</label>
-                                            <select class="form-control" id="programa" name="programa" required>
-                                                <option value="Sistemas">Maestría en Gestión de Tecnologías de la Información y el Conocimiento</option>
-                                                <option value="Electrica">Maestría en Ingeniería de Sistemas y Computación</option>
-                                                <option value="Agronomia">Diplomado de actualización en nuevas tecnologias para desarrollo de software</option>
-                                                                                                
                                             </select>
                                         </div>
 
-                                    <!-- Botones para enviar o cancelar -->
-                                    <button type="submit" class="btn" style="background-color: #28a745; color: white; border: none; border-radius: 0.25rem; padding: 0.5rem 1rem; font-weight: bold;">
-                                        Crear Estudiante
-                                    </button>
-                                    <a href="<?= APP_URL; ?>/admin/estudiantes" class="btn" style="background-color: #6c757d; color: white; border: none; border-radius: 0.25rem; padding: 0.5rem 1rem; font-weight: bold;">
-                                        Cancelar
-                                    </a>
+                                        <!-- Botones para enviar o cancelar -->
+                                        <button type="submit" class="btn" style="background-color: #28a745; color: white; border: none; border-radius: 0.25rem; padding: 0.5rem 1rem; font-weight: bold;">
+                                            Crear Estudiante
+                                        </button>
+                                        <a href="<?= APP_URL; ?>/admin/estudiantes" class="btn" style="background-color: #6c757d; color: white; border: none; border-radius: 0.25rem; padding: 0.5rem 1rem; font-weight: bold;">
+                                            Cancelar
+                                        </a>
                                     </form>
                                 </div>
                         </div>
@@ -162,7 +144,6 @@ include('../../admin/layout/parte1.php'); // Ajusta la ruta si es necesario
         </div>
 
 </div>
-
 
 <?php
 include('../../admin/layout/parte2.php'); // Ajusta la ruta si es necesario

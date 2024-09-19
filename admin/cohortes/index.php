@@ -42,7 +42,7 @@ include('../../app/controllers/cohortes/listado_cohortes.php'); // Incluye el co
                                 <?php
                                     $contador_cohortes =0;
                                     foreach ($cohorte as $cohorte){
-                                            $cod_cohorte = $cohorte['cod_cohorte'];// Usa el campo `id_cordi` como identificador
+                                            $cod_cohorte = $cohorte['cod_cohorte'];// Usa el campo `cod_cohorte` como identificador
                                             $contador_cohortes++; ?>
                                             <tr>
                                                 <td><?= $cohorte['cod_cohorte']; ?></td>
@@ -54,33 +54,35 @@ include('../../app/controllers/cohortes/listado_cohortes.php'); // Incluye el co
                                                 <td style="text-align: center">
                                                     <div class="btn-group" role="group" aria-label="Basic example">
                                                         <a href="show.php?id=<?= $cod_cohorte; ?>" type="button" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
-                                                         <!-- <a href="edit.php?id=<?= $cod_cohorte; ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
-                                                        <form action="<?= APP_URL; ?>/app/controllers/coordinadores/delete.php" onclick="preguntar<?= $cod_cohorte; ?>(event)" method="post" id="miFormulario<?= $cod_cohorte; ?>">
-                                                        <input type="text" name="id_cordi" value="<?= $cod_cohorte; ?>" hidden>
-                                                        <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 5px 5px 0px"><i class="bi bi-trash"></i></button>
-                                                        </form> -->
-                                                        <script>
-                                                            function preguntar<?= $cod_cohorte; ?>(event) {
-                                                                event.preventDefault();
-                                                                Swal.fire({
-                                                                    title: 'Eliminar registro',
-                                                                    text: '¿Desea eliminar este registro?',
-                                                                    icon: 'question',
-                                                                    showDenyButton: true,
-                                                                    confirmButtonText: 'Eliminar',
-                                                                    confirmButtonColor: '#a5161d',
-                                                                    denyButtonColor: '#270a0a',
-                                                                    denyButtonText: 'Cancelar',
-                                                                }).then((result) => {
-                                                                    if (result.isConfirmed) {
-                                                                        var form = $('#miFormulario<?= $cod_cohorte; ?>');
-                                                                        form.submit();
-                                                                    }
-                                                                });
+
+                                                        <a href="edit_cohorte.php?cod_cohorte=<?= htmlspecialchars($cohorte['cod_cohorte']) ?>" type="button" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+
+                                                <!-- Botón para eliminar -->
+                                                <form action="<?= APP_URL; ?>/app/controllers/cohortes/delete_cohorte.php" method="post" id="miFormulario<?= htmlspecialchars($cod_cohorte); ?>">
+                                                    <input type="hidden" name="cod_cohorte" value="<?= htmlspecialchars($cod_cohorte); ?>">
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="preguntar<?= htmlspecialchars($cod_cohorte); ?>()">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                                              
+                                                <script>
+                                                    function preguntar<?= htmlspecialchars($cod_cohorte); ?>() {
+                                                        Swal.fire({
+                                                            title: 'Eliminar registro',
+                                                            text: '¿Desea eliminar este registro?',
+                                                            icon: 'question',
+                                                            showDenyButton: true,
+                                                            confirmButtonText: 'Eliminar',
+                                                            confirmButtonColor: '#a5161d',
+                                                            denyButtonColor: '#270a0a',
+                                                            denyButtonText: 'Cancelar',
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                document.getElementById('miFormulario<?= htmlspecialchars($cod_cohorte); ?>').submit();
                                                             }
-                                                        </script>
-
-
+                                                        });
+                                                    }
+                                                </script>
                                                      </div>
                                                 </td>                                      
                                             </tr>
