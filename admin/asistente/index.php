@@ -128,17 +128,19 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
             "pageLength": 5,
             "language": {
                 "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Asistentes",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Asistentes",
-                "infoFiltered": "(Filtrado de _MAX_ total Asistentes)",
-                "lengthMenu": "Mostrar _MENU_ Asistentes",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Usuarios",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Usuarios",
+                "infoFiltered": "(Filtrado de _MAX_ total Usuarios)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Usuarios",
                 "loadingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",
                 "zeroRecords": "Sin resultados encontrados",
                 "paginate": {
                     "first": "Primero",
-                    "last": "Último",
+                    "last": "Ultimo",
                     "next": "Siguiente",
                     "previous": "Anterior"
                 }
@@ -149,17 +151,24 @@ include('../../layout/mensajes.php'); // Ajusta la ruta si es necesario
                 text: 'Reportes',
                 orientation: 'landscape',
                 buttons: [{
-                    text: 'pdf',
-                    extend: 'pdf',
+                    text: 'Copiar',
+                    extend: 'copy',
+                }, {
+                    extend: 'pdf'
                 },{
                     extend: 'csv'
                 },{
+                    extend: 'excel'
+                },{
                     text: 'Imprimir',
                     extend: 'print'
-                }]
-            }],
+                }
+                ]
+            },
+            ],
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
+</script>
 </script>
 <style>
     h1 {
